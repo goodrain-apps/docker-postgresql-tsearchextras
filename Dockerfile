@@ -29,6 +29,6 @@ RUN chmod 755 /sbin/entrypoint.sh && \
 
 ADD zulip_english.stop /usr/share/postgresql/9.3/tsearch_data/zulip_english.stop
 
-EXPOSE 5432/tcp
+EXPOSE 5432
 VOLUME ["${PG_HOME}"]
 CMD ["/sbin/entrypoint.sh"]
