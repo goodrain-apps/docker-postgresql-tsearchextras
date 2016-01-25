@@ -10,9 +10,10 @@ ___
   - [一键部署]()
   - [环境变量]()
   - [启动与停止]()
+  - [数据安全]()
   - [更新](#upgrading)
 
-- [docker部署和使用]()
+- [私有docker环境部署和使用]()
   - [安装部署](#installation)
   - [快速启动](#quick-start)
   - [持久化](#persistence)
@@ -47,6 +48,9 @@ ___
 ## 启动与停止
 在平台上控制 `PostgreSQL` 服务非常的方便，只需要点击 “启动” 按钮进行服务的启动，点击“关闭” 将服务停止即可。
 
+## 数据安全
+平台采用高速SSD固态硬盘来存储数据，并且会有自动备份机制将数据存3份，用户不必担心数据的丢失。
+
 ## 更新
 当平台的应用版本检测到有更新时，会出现 如下的图标，可以直接点击更新来更新自己的服务。
 
@@ -55,13 +59,22 @@ ___
 `注意：` 请认真查看更新日志，随意更新当前正常运行的应用有可能造成意外的问题。
 
 
-## docker环境部署
+# 私有 docker 环境部署与使用
 
+## 拉取镜像
 ```bash
 docker pull goodrain.io/postgresql-tsearchextras:latest
 ```
 
-# 数据持久化
+## 构建镜像
+
+```bash
+git clone https://github.com/goodrain-apps/docker-postgresql-tsearchextras.git
+cd docker-postgresql-tsearchextras
+docker build -t postgresql-tsearchextras
+```
+
+## 数据持久化
 
 持久化目录需要挂载到容器的 `/var/lib/postgresql` 目录。
 
@@ -81,68 +94,68 @@ docker run --name postgresql -d \
 
 外挂目录主要是为了确保容器在停止后数据不会丢失
 
-# Creating User and Database at Launch
+## 启动时创建用户和数据库
 
-The image allows you to create a user and database at launch time.
+该镜像允许在首次启动数据库时创建用户和数据库。
 
-To create a new user you should specify the `DB_USER` and `DB_PASS` variables. The following command will create a new user *dbuser* with the password *dbpass*.
+通过在启动命令中指定 `DB_USER` 和 `DB_PASS` 变量的值来创建用户和数据库。下面示例命令创建了一个 *dbuser* 用户，并且设置了密码为 *dbpass*。
 
 ```bash
 docker run --name postgresql -d \
   -e 'DB_USER=dbuser' -e 'DB_PASS=dbpass' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-**NOTE**
-- If the password is not specified the user will not be created
-- If the user user already exists no changes will be made
+**注意**
+- 如果没有指定密码，则用户不会被创建
+- 如果用户已经存在，则所有操作都不会执行
 
-Similarly, you can also create a new database by specifying the database name in the `DB_NAME` variable.
+当然你也可以在启动命令中指定 `DB_NAME` 变量来初始化创建一个数据库。
 
 ```bash
 docker run --name postgresql -d \
-  -e 'DB_NAME=dbname' quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  -e 'DB_NAME=dbname' goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-You may also specify a comma separated list of database names in the `DB_NAME` variable. The following command creates two new databases named *dbname1* and *dbname2* (p.s. this feature is only available in releases greater than 9.1-1).
+你还可以一次性创建多个数据库，通过设置 `DB_NAME` 变量，并且利用逗号来分开多个数据库名。 下面的命令创建了2个数据库，名字为  *dbname1* 和 *dbname2* 
 
 ```bash
 docker run --name postgresql -d \
   -e 'DB_NAME=dbname1,dbname2' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-If the `DB_USER` and `DB_PASS` variables are also specified while creating the database, then the user is granted access to the database(s).
+如果在初始化创建数据库的时候同时指定了 `DB_USER` 和 `DB_PASS` 变量，那么这个用户会对这个初始化的数据库有完全的访问权限。
 
-For example,
+例如：
 
 ```bash
 docker run --name postgresql -d \
   -e 'DB_USER=dbuser' -e 'DB_PASS=dbpass' -e 'DB_NAME=dbname' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-will create a user *dbuser* with the password *dbpass*. It will also create a database named *dbname* and the *dbuser* user will have full access to the *dbname* database.
+它会创建 *dbuser* 用户，并且设置密码为 *dbpass* 。 还会创建一个名为 *dbname* 的数据库，*dbuser* 用户拥有*dbname* 数据库完全的访问权限。
 
-The `DB_LOCALE` environment variable can be used to configure the locale used for database creation. Its default value is set to C.
+`DB_LOCALE` 环境变量用来配置区域（locale），默认值是  C 。
 
-The `PSQL_TRUST_LOCALNET` environment variable can be used to configure postgres to trust connections on the same network.  This is handy for other containers to connect without authentication. To enable this behavior, set `PSQL_TRUST_LOCALNET` to `true`.
+`PSQL_TRUST_LOCALNET` 环境变量 用来配置 postgres 允许来自本地网络的链接。目的就是让其它容器以link的形式链接postgres时可以通过无验证的形式链接数据库。启用该选项需要将 `PSQL_TRUST_LOCALNET` 设置为 `true`。
 
-For example,
+如下：
 
 ```bash
 docker run --name postgresql -d \
   -e 'PSQL_TRUST_LOCALNET=true' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io//docker-zulip-postgresql-tsearchextras:latest
 ```
 
-This has the effect of adding the following to the `pg_hba.conf` file:
+它的效果类似在 `pg_hba.conf` 文件中添加了如下的内容:
 
 ```
 host    all             all             samenet                 trust
 ```
 
-# Creating a Snapshot or Slave Database
+## 创建快照或者从库
 
 You may use the `PSQL_MODE` variable along with `REPLICATION_HOST`, `REPLICATION_PORT`, `REPLICATION_USER` and `REPLICATION_PASS` to create a snapshot of an existing database and enable stream replication.
 
