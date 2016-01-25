@@ -4,20 +4,19 @@
 
 ___
 
-# Table of Contents
+# 目录
 
-- [Introduction](#introduction)
-- [Changelog](Changelog.md)
-- [Contributing](#contributing)
-- [Reporting Issues](#reporting-issues)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Persistence](#persistence)
-- [Creating User and Database at Launch](#creating-user-and-database-at-launch)
-- [Creating a Snapshot or Slave Database](#creating-a-snapshot-or-slave-database)
-- [Host UID / GID Mapping](#host-uid--gid-mapping)
-- [Upgrading](#upgrading)
-- [Shell Access](#shell-access)
+- [说明](#introduction)
+- [更新记录](Changelog.md)
+- [问题报告](#reporting-issues)
+- [安装部署](#installation)
+- [快速启动](#quick-start)
+- [持久化](#persistence)
+- [启动时创建用户和数据库](#creating-user-and-database-at-launch)
+- [创建快照或从数据库](#creating-a-snapshot-or-slave-database)
+- [主机 UID / GID 映射](#host-uid--gid-mapping)
+- [更新](#upgrading)
+- [Shell 访问](#shell-access)
 
 # Introduction
 
