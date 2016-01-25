@@ -39,42 +39,28 @@ ___
 ## docker环境部署
 
 ```bash
-docker pull quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+docker pull goodrain.io/postgresql-tsearchextras:latest
 ```
 
-# Quick Start
+# 数据持久化
 
-Run the postgresql image
+持久化目录需要挂载到容器的 `/var/lib/postgresql` 目录。
 
-```bash
-docker run --name postgresql -d quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
-```
-
-The simplest way to login to the postgresql container as the administrative `postgres` user is to use the `docker exec` command to attach a new process to the running container and connect to the postgresql server over the unix socket.
-
-```bash
-docker exec -it postgresql sudo -u postgres psql
-```
-
-# Persistence
-
-For data persistence a volume should be mounted at `/var/lib/postgresql`.
-
-SELinux users are also required to change the security context of the mount point so that it plays nicely with selinux.
+如果启用了 SELinux 需要修改目录的安全属性
 
 ```bash
 mkdir -p /opt/postgresql/data
 sudo chcon -Rt svirt_sandbox_file_t /opt/postgresql/data
 ```
 
-The updated run command looks like this.
+运行的命令类似如下：
 
 ```bash
 docker run --name postgresql -d \
-  -v /opt/postgresql/data:/var/lib/postgresql quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  -v /opt/postgresql/data:/var/lib/postgresql goodrain.io/postgresql-tsearchextras:latest
 ```
 
-This will make sure that the data stored in the database is not lost when the image is stopped and started again.
+外挂目录主要是为了确保容器在停止后数据不会丢失
 
 # Creating User and Database at Launch
 
