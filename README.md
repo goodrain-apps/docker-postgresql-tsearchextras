@@ -258,4 +258,4 @@ docker run --name postgresql -d [OPTIONS] goodrain.io/docker-zulip-postgresql-ts
 如果你觉得这个镜像很有用或者愿意共同改进项目，可以通过如下形式参与：
 
 - 如果有新特性或者bug修复，请发送 一个 Pull 请求，我们会及时反馈。
-- 可以访问我们的好雨社区参与[评论]()
+- 可以访问我们的好雨社区参与[评论](http://t.goodrain.com/t/postgresql-with-tsearchextras-for-zulip/118/1)
