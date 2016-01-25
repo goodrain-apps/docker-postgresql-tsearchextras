@@ -1,4 +1,4 @@
-#docker-zulip-postgresql-tsearchextras
+#docker postgresql with tsearchextras for zulip
 
 这个仓库fork自 [sameersbn/postgresql](https://github.com/sameersbn/docker-postgresql) 并且安装了 zulip 的 postgressql-9.3/9.4-tsearch-extras 支持。
 
