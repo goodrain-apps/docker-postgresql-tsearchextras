@@ -1,7 +1,6 @@
 #docker-zulip-postgresql-tsearchextras
-[![Docker Repository on Quay.io](https://quay.io/repository/galexrt/zulip-postgresql-tsearchextras/status "Docker Repository on Quay.io")](https://quay.io/repository/galexrt/zulip-postgresql-tsearchextras)
 
-This is the sameersbn/postgresql image with the zulip postgressql-9.3/9.4-tsearch-extras installed.
+这个仓库fork自 sameersbn/postgresql 并且安装了 zulip 的 postgressql-9.3/9.4-tsearch-extras 支持。
 
 ___
 
