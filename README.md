@@ -160,21 +160,21 @@ host    all             all             samenet                 trust
 
 ## 创建快照或者从库
 
-You may use the `PSQL_MODE` variable along with `REPLICATION_HOST`, `REPLICATION_PORT`, `REPLICATION_USER` and `REPLICATION_PASS` to create a snapshot of an existing database and enable stream replication.
+你可以利用 `PSQL_MODE` 变量，配合 `REPLICATION_HOST`, `REPLICATION_PORT`, `REPLICATION_USER` 和 `REPLICATION_PASS` 变量来创建一个现有数据库的快照并且启动流复制。
 
-Your master database must support replication or super-user access for the credentials you specify. The `PSQL_MODE` variable should be set to `master`, for replication on your master node and `slave` or `snapshot` respectively for streaming replication or a point-in-time snapshot of a running instance.
+你的主库必须支持复制，并且超级用户有相关的操作权限。 主库 将 `PSQL_MODE` 变量设置为 `master`，再运行一个示例，将`PSQL_MODE` 变量设置为 `slave` 或者 `snapshot` 。
 
-Create a master instance
+创建一个主库实例：
 
 ```bash
 docker run --name='psql-master' -it --rm \
   -e 'PSQL_MODE=master' -e 'PSQL_TRUST_LOCALNET=true' \
   -e 'REPLICATION_USER=replicator' -e 'REPLICATION_PASS=replicatorpass' \
   -e 'DB_NAME=dbname' -e 'DB_USER=dbuser' -e 'DB_PASS=dbpass' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-Create a streaming replication instance
+创建一个复制流实例：
 
 ```bash
 docker run --name='psql-slave' -it --rm  \
@@ -182,26 +182,24 @@ docker run --name='psql-slave' -it --rm  \
   -e 'PSQL_MODE=slave' -e 'PSQL_TRUST_LOCALNET=true' \
   -e 'REPLICATION_HOST=psql-master' -e 'REPLICATION_PORT=5432' \
   -e 'REPLICATION_USER=replicator' -e 'REPLICATION_PASS=replicatorpass' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-# Enable Unaccent (Search plain text with accent)
+## 启用 Unaccent (文本搜索字典去掉重音)
 
-Unaccent is a text search dictionary that removes accents (diacritic signs) from lexemes. It's a filtering dictionary, which means its output is always passed to the next dictionary (if any), unlike the normal behavior of dictionaries. This allows accent-insensitive processing for full text search.
+unaccent 是一个文本搜索字典，它从词汇中去掉重音符号（变音标志符号）。 这是一个过滤词典，这意味着它的输出总是传递给下一个字典（如果存在的话），而不像常规行为的字典。 这允许对全文搜索进行重音不敏感的处理。
 
-By default unaccent is configure to `false`
+默认 unaccent 被设置为 `false`
 
 ```bash
 docker run --name postgresql -d \
   -e 'DB_UNACCENT=true' \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-# Host UID / GID Mapping
+# 主机 UID / GID 的映射
 
-Per default the container is configured to run postgres as user and group `postgres` with some unknown `uid` and `gid`. The host possibly uses these ids for different purposes leading to unfavorable effects. From the host it appears as if the mounted data volumes are owned by the host's user/group `[whatever id postgres has in the image]`.
-
-Also the container processes seem to be executed as the host's user/group `[whatever id postgres has in the image]`. The container can be configured to map the `uid` and `gid` of `postgres` to different ids on host by passing the environment variables `USERMAP_UID` and `USERMAP_GID`. The following command maps the ids to user and group `postgres` on the host.
+默认情况下容器在运行postgres时会使用 `postgres` 用户和组，使用一些未知的 `uid` 和 `gid`。但主机拥有这些id的用户和组可能是其它的用户，这样可能会造成莫名其妙的问题。因此为了保证统一，可以在运行镜像时指定主机的uid和gid来映射到容器中的`postgres` 账号中。通过配置 `USERMAP_UID` 和 `USERMAP_GID` 变量来实现，如下：
 
 ```bash
 docker run --name=postgresql -it --rm [options] \
