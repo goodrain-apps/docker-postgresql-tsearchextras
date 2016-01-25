@@ -6,9 +6,9 @@ ___
 
 # 目录
 
-- [说明](#introduction)
+- [说明](#说明)
 - [更新记录](Changelog.md)
-- [问题报告](#reporting-issues)
+- [项目参与和讨论](#项目参与和讨论)
 - [安装部署](#installation)
 - [快速启动](#quick-start)
 - [持久化](#persistence)
@@ -22,57 +22,24 @@ ___
 
 这个版本的PostgreSQL Dockerfile 集成了[全文索引](https://github.com/zbenjamin/tsearch_extras)功能，主要配合Zulip使用
 
-# 参与和贡献
+# 项目参与和讨论
 
 如果你觉得这个镜像很有用可以通过如下方式参与和改进项目：
 
 - 如果有新特性或者bug修复，请发送 一个 Pull 请求，我们会及时反馈。
-- 新用户可以查看 [问题列表](https://github.com/sameersbn/docker-postgresql/issues) 找到帮助或提建议
+- 新用户可以查看 [PostgreSQL-TSearchExtras](https://github.com/goodrain-apps/docker-postgresql-tsearchextras/issues) 查看介绍文档和参与讨论
 
-# Reporting Issues
+# 安装部署
 
-Docker is a relatively new project and is being actively developed and tested by a thriving community of developers and testers and every release of Docker features many enhancements and bugfixes.
+## 一键部署
 
-Given the nature of the development and release cycle it is very important that you have the latest version of docker installed because any issue that you encounter might have already been fixed with a newer docker release.
 
-For ubuntu users I suggest [installing docker](https://docs.docker.com/installation/ubuntulinux/) using docker's own package repository since the version of docker packaged in the ubuntu repositories are a little dated.
-
-Here is the shortform of the installation of an updated version of docker on ubuntu.
-
-```bash
-sudo apt-get purge docker.io
-curl -s https://get.docker.io/ubuntu/ | sudo sh
-sudo apt-get update
-sudo apt-get install lxc-docker
-```
-
-Fedora and RHEL/CentOS users should try disabling selinux with `setenforce 0` and check if resolves the issue. If it does than there is not much that I can help you with. You can either stick with selinux disabled (not recommended by redhat) or switch to using ubuntu.
-
-If using the latest docker version and/or disabling selinux does not fix the issue then please file a issue request on the [issues](https://github.com/sameersbn/docker-postgresql/issues) page.
-
-In your issue report please make sure you provide the following information:
-
-- The host distribution and release version.
-- Output of the `docker version` command
-- Output of the `docker info` command
-- The `docker run` command you used to run the image (mask out the sensitive bits).
-
-# Installation
-
-Automated builds of the image are available on [Quay.io](https://quay.io/repository/galexrt/docker-zulip-postgresql-tsearchextras) and is the recommended method of
-installation.
+## docker环境部署
 
 ```bash
 docker pull quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-Alternately you can build the image yourself.
-
-```bash
-git clone https://github.com/sameersbn/docker-postgresql.git
-cd docker-postgresql
-docker build -t="$USER/postgresql" .
-```
 
 # Quick Start
 
