@@ -1,40 +1,47 @@
-#docker postgresql with tsearchextras for zulip
+#[dockerfile] postgresql with tsearchextras for zulip
 
-这个仓库fork自 [sameersbn/postgresql](https://github.com/sameersbn/docker-postgresql) 并且安装了 zulip 的 postgressql-9.3/9.4-tsearch-extras 支持。
+这个仓库fork自 [sameersbn/postgresql](https://github.com/sameersbn/docker-postgresql) 并且为了配合 zulip 一起使用还安装了 [全文索引](https://github.com/zbenjamin/tsearch_extras)（tsearch-extras）的支持。
 
 ___
 
 # 目录
 
-- [说明](#说明)
-- [更新记录](Changelog.md)
+- [好雨云部署和使用]()
+  -  
+  - [更新](#upgrading)
+
+- [docker部署和使用]()
+  - [安装部署](#installation)
+  - [快速启动](#quick-start)
+  - [持久化](#persistence)
+  - [启动时创建用户和数据库](#creating-user-and-database-at-launch)
+  - [创建快照或从数据库](#creating-a-snapshot-or-slave-database)
+  - [主机 UID / GID 映射](#host-uid--gid-mapping)
+  - [Shell 访问](#shell-access)
+  - [更新](#upgrading)
+
+
+
+- [更新日志](Changelog.md)
 - [项目参与和讨论](#项目参与和讨论)
-- [安装部署](#installation)
-- [快速启动](#quick-start)
-- [持久化](#persistence)
-- [启动时创建用户和数据库](#creating-user-and-database-at-launch)
-- [创建快照或从数据库](#creating-a-snapshot-or-slave-database)
-- [主机 UID / GID 映射](#host-uid--gid-mapping)
-- [更新](#upgrading)
-- [Shell 访问](#shell-access)
 
-# 说明
 
-这个版本的PostgreSQL Dockerfile 集成了[全文索引](https://github.com/zbenjamin/tsearch_extras)功能，主要配合Zulip使用
-
-# 项目参与和讨论
-
-如果你觉得这个镜像很有用可以通过如下方式参与和改进项目：
-
-- 如果有新特性或者bug修复，请发送 一个 Pull 请求，我们会及时反馈。
-- 新用户可以查看 [PostgreSQL-TSearchExtras](https://github.com/goodrain-apps/docker-postgresql-tsearchextras/issues) 查看介绍文档和参与讨论
-
-# 安装部署
+# 好雨云部署和使用
 
 ## 一键部署
 点击下面的 按钮会跳转到 好雨应用市场的应用首页中，可以通过一键部署按钮安装
 
 <a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_120201.png"></img></a>
+
+## 环境变量
+| 变量名| 变量默认值| 说明|
+|-----|---------|-----|
+|POSTGRESQL_HOST| 127.0.0.1| 连接ip地址|
+|POSTGRESQL_POST| 5432 | 连接端口|
+|POSTGRESQL_USER| admin | 连接用户名|
+|POSTGRESQL_USER| **随机** | 连接密码|
+| POSTGRESQL_NAME|test|初始创建数据库|
+
 
 ## docker环境部署
 
@@ -222,3 +229,10 @@ sudo docker-enter postgresql
 ```
 
 For more information refer https://github.com/jpetazzo/nsenter
+
+# 项目参与和讨论
+
+如果你觉得这个镜像很有用可以通过如下方式参与和改进项目：
+
+- 如果有新特性或者bug修复，请发送 一个 Pull 请求，我们会及时反馈。
+- 新用户可以查看 [PostgreSQL-TSearchExtras](https://github.com/goodrain-apps/docker-postgresql-tsearchextras/issues) 查看介绍文档和参与讨论
