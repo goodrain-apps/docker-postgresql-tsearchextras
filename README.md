@@ -32,14 +32,15 @@ ___
 # 安装部署
 
 ## 一键部署
+点击下面的 按钮会跳转到 好雨应用市场的应用首页中，可以通过一键部署按钮安装
 
+<a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_120201.png"></img></a>
 
 ## docker环境部署
 
 ```bash
 docker pull quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
 ```
-
 
 # Quick Start
 
