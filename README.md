@@ -43,7 +43,7 @@ ___
 |POSTGRESQL_HOST| 127.0.0.1| 连接ip地址|
 |POSTGRESQL_POST| 5432 | 连接端口|
 |POSTGRESQL_USER| admin | 连接用户名|
-|POSTGRESQL_USER| **随机** | 连接密码|
+|POSTGRESQL_PASS| **随机** | 连接密码|
 | POSTGRESQL_NAME|test|初始创建数据库|
 
 ## 启动与停止
