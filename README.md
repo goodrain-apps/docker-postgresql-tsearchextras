@@ -36,6 +36,9 @@ ___
 
 <a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_120201.png"></img></a>
 
+**注意：**
+这个版本的`PostgreSQL` 是专门针对 `Zulip` 的制定版本，安装`Zulip`时会自动安装，如果用户想独立安装这个特殊版本也是可以的。
+
 ## 环境变量
 | 变量名| 变量默认值| 说明|
 |-----|---------|-----|
