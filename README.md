@@ -199,62 +199,62 @@ docker run --name postgresql -d \
 
 # 主机 UID / GID 的映射
 
-默认情况下容器在运行postgres时会使用 `postgres` 用户和组，使用一些未知的 `uid` 和 `gid`。但主机拥有这些id的用户和组可能是其它的用户，这样可能会造成莫名其妙的问题。因此为了保证统一，可以在运行镜像时指定主机的uid和gid来映射到容器中的`postgres` 账号中。通过配置 `USERMAP_UID` 和 `USERMAP_GID` 变量来实现，如下：
+默认情况下容器在运行postgres时会使用 `postgres` 用户和组，它们的 `uid` 和 `gid` 都是不可控的。但如果在做持久化数据卷挂载时主机看到的数据属主可能会觉得莫名其妙。因此为了保证统一，可以在运行镜像时指定主机的某个账号（可以是postgres账号）的`uid`和`gid`来映射到容器中的`postgres` 账号中。通过配置 `USERMAP_UID` 和 `USERMAP_GID` 变量来实现，如下：
 
 ```bash
 docker run --name=postgresql -it --rm [options] \
   --env="USERMAP_UID=$(id -u postgres)" --env="USERMAP_GID=$(id -g postgres)" \
-  quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+ goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
 
-# Upgrading
+## 更新
 
-To upgrade to newer releases, simply follow this 3 step upgrade procedure.
+通过下面3步操作更新到最新的发布版本。
 
-- **Step 1**: Stop the currently running image
+- **第1步**: 停止当前运行的容器
 
 ```bash
 docker stop postgresql
 ```
 
-- **Step 2**: Update the docker image.
+- **Step 2**: 更新docker镜像
 
 ```bash
-docker pull quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+docker pull goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-- **Step 3**: Start the image
+- **Step 3**: 启动新镜像
 
 ```bash
-docker run --name postgresql -d [OPTIONS] quay.io/galexrt/docker-zulip-postgresql-tsearchextras:latest
+docker run --name postgresql -d [OPTIONS] goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
-# Shell Access
+## Shell 访问
 
-For debugging and maintenance purposes you may want access the containers shell. If you are using docker version `1.3.0` or higher you can access a running containers shell using `docker exec` command.
+为了方便的调试和维护，有些时候需要进入到容器内部进行操作。如果你使用的docker 版本是基于 `1.3.0` 或者更高版本，可以执行  `docker exec` 命令，如下：
 
 ```bash
 docker exec -it postgresql bash
 ```
 
-If you are using an older version of docker, you can use the [nsenter](http://man7.org/linux/man-pages/man1/nsenter.1.html) linux tool (part of the util-linux package) to access the container shell.
+如果你使用的是比较旧的版本，你需要使用 [nsenter](http://man7.org/linux/man-pages/man1/nsenter.1.html) 系统工具 (安装 util-linux 包) 来访问容器的shell。
 
-Some linux distros (e.g. ubuntu) use older versions of the util-linux which do not include the `nsenter` tool. To get around this @jpetazzo has created a nice docker image that allows you to install the `nsenter` utility and a helper script named `docker-enter` on these distros.
+部分linux发行版本 (如：ubuntu) 还在使用旧版本的 util-linux 包，它是不包含 `nsenter` 工具的。但这也难不倒咱们伟大的程序员， @jpetazzo 大侠创建来一个可以安装 `nsenter`的镜像。利用这个镜像可以安装 `nsenter` 工具。
 
-To install `nsenter` execute the following command on your host,
+为了安装 `nsenter` 在你的主机中执行如下命令：
 
 ```bash
 docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
 ```
 
-Now you can access the container shell using the command
+完成后，可以通过下面的命令进入到你的容器命令行中
 
 ```bash
 sudo docker-enter postgresql
 ```
 
-For more information refer https://github.com/jpetazzo/nsenter
+更多的信息参见 https://github.com/jpetazzo/nsenter
 
 # 项目参与和讨论
 
