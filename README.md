@@ -6,30 +6,28 @@ ___
 
 # 目录
 
-- [好雨云部署和使用]()
-  - [一键部署]()
-  - [环境变量]()
-  - [启动与停止]()
-  - [数据安全]()
-  - [更新](#upgrading)
+- [部署到好雨云](#部署到好雨云)
+  - [一键部署](#一键部署)
+  - [环境变量](#环境变量)
+  - [启动与停止](#启动与停止)
+  - [数据安全](#数据安全)
+  - [更新](#更新)
 
-- [私有docker环境部署和使用]()
-  - [安装部署](#installation)
-  - [快速启动](#quick-start)
-  - [持久化](#persistence)
-  - [启动时创建用户和数据库](#creating-user-and-database-at-launch)
-  - [创建快照或从数据库](#creating-a-snapshot-or-slave-database)
-  - [主机 UID / GID 映射](#host-uid--gid-mapping)
-  - [Shell 访问](#shell-access)
-  - [更新](#upgrading)
-
-
-
-- [更新日志](Changelog.md)
+- [部署到本地](#部署到本地)
+  - [拉取镜像](#拉取镜像)
+  - [构建镜像](#构建镜像)
+  - [数据持久化](#数据持久化)
+  - [初始化用户和库](#初始化用户和库)
+  - [创建快照或者从库](#创建快照或者从库)
+  - [启用 Unaccent](#启用 Unaccent)
+  - [主机 UID / GID 的映射](#主机 UID / GID 的映射)
+  - [Shell 访问](#Shell 访问)
+  - [更新](#更新)
 - [项目参与和讨论](#项目参与和讨论)
+- [更新日志](Changelog.md)
 
 
-# 好雨云部署和使用
+# 部署到好雨云
 
 ## 一键部署
 点击下面的 按钮会跳转到 好雨应用市场的应用首页中，可以通过一键部署按钮安装
@@ -62,7 +60,7 @@ ___
 `注意：` 请认真查看更新日志，随意更新当前正常运行的应用有可能造成意外的问题。
 
 
-# 私有 docker 环境部署与使用
+# 部署到本地
 
 ## 拉取镜像
 ```bash
@@ -97,7 +95,7 @@ docker run --name postgresql -d \
 
 外挂目录主要是为了确保容器在停止后数据不会丢失
 
-## 启动时创建用户和数据库
+## 初始化用户和库
 
 该镜像允许在首次启动数据库时创建用户和数据库。
 
@@ -207,6 +205,31 @@ docker run --name=postgresql -it --rm [options] \
  goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
 
+## Shell 访问
+
+为了方便的调试和维护，有些时候需要进入到容器内部进行操作。如果你使用的docker 版本是基于 `1.3.0` 或者更高版本，可以执行  `docker exec` 命令，如下：
+
+```bash
+docker exec -it postgresql bash
+```
+
+如果你使用的是比较旧的版本，你需要使用 [nsenter](http://man7.org/linux/man-pages/man1/nsenter.1.html) 系统工具 (安装 util-linux 包) 来访问容器的shell。
+
+部分linux发行版本 (如：ubuntu) 还在使用旧版本的 util-linux 包，它是不包含 `nsenter` 工具的。但这也难不倒咱们伟大的程序员， @jpetazzo 大侠创建了一个可以安装 `nsenter`的镜像。利用这个镜像可以安装 `nsenter` 工具。
+
+为了安装 `nsenter` 在你的主机中执行如下命令：
+
+```bash
+docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
+```
+
+完成后，可以通过下面的命令进入到你的容器命令行中
+
+```bash
+sudo docker-enter postgresql
+```
+
+更多的信息参见 https://github.com/jpetazzo/nsenter
 
 ## 更新
 
@@ -229,32 +252,6 @@ docker pull goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```bash
 docker run --name postgresql -d [OPTIONS] goodrain.io/docker-zulip-postgresql-tsearchextras:latest
 ```
-
-## Shell 访问
-
-为了方便的调试和维护，有些时候需要进入到容器内部进行操作。如果你使用的docker 版本是基于 `1.3.0` 或者更高版本，可以执行  `docker exec` 命令，如下：
-
-```bash
-docker exec -it postgresql bash
-```
-
-如果你使用的是比较旧的版本，你需要使用 [nsenter](http://man7.org/linux/man-pages/man1/nsenter.1.html) 系统工具 (安装 util-linux 包) 来访问容器的shell。
-
-部分linux发行版本 (如：ubuntu) 还在使用旧版本的 util-linux 包，它是不包含 `nsenter` 工具的。但这也难不倒咱们伟大的程序员， @jpetazzo 大侠创建来一个可以安装 `nsenter`的镜像。利用这个镜像可以安装 `nsenter` 工具。
-
-为了安装 `nsenter` 在你的主机中执行如下命令：
-
-```bash
-docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
-```
-
-完成后，可以通过下面的命令进入到你的容器命令行中
-
-```bash
-sudo docker-enter postgresql
-```
-
-更多的信息参见 https://github.com/jpetazzo/nsenter
 
 # 项目参与和讨论
 
