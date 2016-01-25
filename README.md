@@ -18,17 +18,16 @@ ___
 - [更新](#upgrading)
 - [Shell 访问](#shell-access)
 
-# Introduction
+# 说明
 
-Dockerfile to build a PostgreSQL container image which can be linked to other containers.
+这个版本的PostgreSQL Dockerfile 集成了[全文索引](https://github.com/zbenjamin/tsearch_extras)功能，主要配合Zulip使用
 
-# Contributing
+# 参与和贡献
 
-If you find this image useful here's how you can help:
+如果你觉得这个镜像很有用可以通过如下方式参与和改进项目：
 
-- Send a Pull Request with your awesome new features and bug fixes
-- Help new users with [Issues](https://github.com/sameersbn/docker-postgresql/issues) they may encounter
-- Support the development of this image with a [donation](http://www.damagehead.com/donate/)
+- 如果有新特性或者bug修复，请发送 一个 Pull 请求，我们会及时反馈。
+- 新用户可以查看 [问题列表](https://github.com/sameersbn/docker-postgresql/issues) 找到帮助或提建议
 
 # Reporting Issues
 
