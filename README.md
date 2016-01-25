@@ -1,6 +1,8 @@
 #[dockerfile] postgresql with tsearchextras for zulip
 
-这个仓库fork自 [sameersbn/postgresql](https://github.com/sameersbn/docker-postgresql) 并且为了配合 zulip 一起使用还安装了 [全文索引](https://github.com/zbenjamin/tsearch_extras)（tsearch-extras）的支持。
+> 这个版本的 `postgresql` 修改自 [sameersbn/postgresql](https://github.com/sameersbn/docker-postgresql) 主要是为 zulip 提供[全文索引](https://github.com/zbenjamin/tsearch_extras)（tsearch-extras）功能而独立制作。
+
+<a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_120201.png"></img></a>
 
 ___
 
@@ -30,9 +32,7 @@ ___
 # 部署到好雨云
 
 ## 一键部署
-点击下面的 按钮会跳转到 好雨应用市场的应用首页中，可以通过一键部署按钮安装
-
-<a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_120201.png"></img></a>
+通过点击本文最上方的 “安装到好雨云” 按钮会跳转到 好雨应用市场的应用首页中，可以通过一键部署按钮安装
 
 **注意：**
 这个版本的`PostgreSQL` 是专门针对 `Zulip` 的制定版本，安装`Zulip`时会自动安装，如果用户想独立安装这个特殊版本也是可以的。
