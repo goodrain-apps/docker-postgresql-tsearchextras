@@ -2,7 +2,7 @@
 
 > 这个版本的 `postgresql` 修改自 [sameersbn/postgresql](https://github.com/sameersbn/docker-postgresql) 主要是为 zulip 提供[全文索引](https://github.com/zbenjamin/tsearch_extras)（tsearch-extras）功能而独立制作。
 
-<a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_120201.png"></img></a>
+<a href="http://app.goodrain.com/app/28/" target="_blank"><img src="http://www.goodrain.com/images/deploy/button_160125.png"></img></a>
 
 ___
 
